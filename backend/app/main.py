@@ -14,7 +14,8 @@ app = FastAPI(
 # Lista de endereços (origens) que têm permissão para se comunicar com o backend
 origins = [
     "http://localhost:3000",
-    "http://192.168.0.86:3000", # <-- NOVO ENDEREÇO DE REDE ADICIONADO
+    "http://192.168.0.86:3000",
+    https://geoprumo-app.onrender.com# <-- NOVO ENDEREÇO DE REDE ADICIONADO
     # Adicione aqui outros endereços se necessário (ex: o futuro endereço de produção na Render)
 ]
 
