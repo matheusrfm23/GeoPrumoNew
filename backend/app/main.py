@@ -13,6 +13,10 @@ app = FastAPI(
 
 # Lista de endereços (origens) que têm permissão para se comunicar com o backend
 origins = [
+    const API_URL = process.env.NODE_ENV === 'production'
+   'https://geoprumo-backend.onrender.com/api/v1/process/optimize'
+   'http://127.0.0.1:8000/api/v1/process/optimize';
+
     "https://geoprumo-app.onrender.com",# <-- NOVO ENDEREÇO DE REDE ADICIONADO
     # Adicione aqui outros endereços se necessário (ex: o futuro endereço de produção na Render)
 ]
