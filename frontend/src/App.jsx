@@ -1,11 +1,4 @@
 // geoprumo/frontend/src/App.jsx
-function App() {
-  console.log("DEBUG: A URL da API é:", process.env.REACT_APP_API_URL); // <-- ADICIONE ESTA LINHA
-  
-  // ... o resto do seu código continua aqui ...
-  const [points, setPoints] = useSessionStorage('points', []);
-  // ...
-}
 
 import React, { useState } from 'react';
 import Uploader from './components/Upload/Uploader';
@@ -14,9 +7,11 @@ import MapView from './components/MapView/MapView';
 import ActionPanel from './components/ActionPanel/ActionPanel';
 import ManualAdd from './components/ManualAdd/ManualAdd';
 import useSessionStorage from './hooks/useSessionStorage';
-import { optimizeRouteData, enrichRouteWithAI, exportRouteFile, geocodeSearch, getGoogleMapsLinks } from './services/api';
+import { optimizeRouteData, enrichRouteWithAI, exportRouteFile, geocodeSearch, autocompleteAddress, getGoogleMapsLinks } from './services/api';
 
 function App() {
+  console.log("DEBUG: A URL da API é:", process.env.REACT_APP_API_URL); // Esta é a única linha que queríamos adicionar aqui dentro
+  const [points, setPoints] = useSessionStorage('points', []);
   const [isLoading, setIsLoading] = useState(false);
   const [isEnriching, setIsEnriching] = useState(false);
   const [optimizedData, setOptimizedData] = useSessionStorage('geoPrumoSession', null);
@@ -49,7 +44,7 @@ function App() {
   };
   
   const handleOptimize = async () => {
-    const activePoints = optimizedData ? optimizedData.optimized_route.filter(p => p.active !== false) : [];
+    const active = optimizedData ? optimizedData.optimized_route.filter(p => p.active !== false) : [];
     const payloadWithExistingPoints = { ...pendingData, existing_points: activePoints };
     if (payloadWithExistingPoints.files.length === 0 && payloadWithExistingPoints.links.length === 0 && payloadWithExistingPoints.texts.length === 0 && payloadWithExistingPoints.existing_points.length === 0) {
       setError("Nenhum ponto para otimizar.");
