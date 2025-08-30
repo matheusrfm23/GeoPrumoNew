@@ -10,7 +10,8 @@ import useSessionStorage from './hooks/useSessionStorage';
 import { optimizeRouteData, enrichRouteWithAI, exportRouteFile, geocodeSearch, autocompleteAddress, getGoogleMapsLinks } from './services/api';
 
 function App() {
-  console.log("DEBUG: A URL da API é:", process.env.REACT_APP_API_URL); // Esta é a única linha que queríamos adicionar aqui dentro
+  console.log("DEBUG: A URL da API é:", process.env.REACT_APP_API_URL); // Linha de debug adicionada
+
   const [points, setPoints] = useSessionStorage('points', []);
   const [isLoading, setIsLoading] = useState(false);
   const [isEnriching, setIsEnriching] = useState(false);
@@ -24,13 +25,12 @@ function App() {
     if (!optimizedData || !optimizedData.optimized_route) return;
     setError(null);
     try {
-      // Filtra apenas os pontos ativos para enviar para a geração de links
       const activePoints = optimizedData.optimized_route.filter(p => p.active !== false);
       const urls = await getGoogleMapsLinks(activePoints);
       setGoogleMapsLinks(urls);
     } catch (err) {
       setError(err.message);
-      setGoogleMapsLinks([]); // Limpa os links em caso de erro
+      setGoogleMapsLinks([]);
     }
   };
 
@@ -45,7 +45,8 @@ function App() {
   
   const handleOptimize = async () => {
     const active = optimizedData ? optimizedData.optimized_route.filter(p => p.active !== false) : [];
-    const payloadWithExistingPoints = { ...pendingData, existing_points: activePoints };
+    // CORREÇÃO: A variável aqui era 'activePoints', mas deveria ser 'active'.
+    const payloadWithExistingPoints = { ...pendingData, existing_points: active }; 
     if (payloadWithExistingPoints.files.length === 0 && payloadWithExistingPoints.links.length === 0 && payloadWithExistingPoints.texts.length === 0 && payloadWithExistingPoints.existing_points.length === 0) {
       setError("Nenhum ponto para otimizar.");
       return;
@@ -136,7 +137,6 @@ function App() {
       </header>
 
       <main className="flex-grow container mx-auto p-4 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:h-[calc(100vh-80px)]">
-        {/* CORREÇÃO: Layout flexível para a coluna da esquerda */}
         <div className="flex flex-col space-y-4">
           <div className="flex-shrink-0 bg-white p-4 rounded-lg shadow-md">
             <h2 className="text-xl font-bold text-gray-700 mb-2">
