@@ -1,4 +1,11 @@
 // geoprumo/frontend/src/App.jsx
+function App() {
+  console.log("DEBUG: A URL da API é:", process.env.REACT_APP_API_URL); // <-- ADICIONE ESTA LINHA
+  
+  // ... o resto do seu código continua aqui ...
+  const [points, setPoints] = useSessionStorage('points', []);
+  // ...
+}
 
 import React, { useState } from 'react';
 import Uploader from './components/Upload/Uploader';
